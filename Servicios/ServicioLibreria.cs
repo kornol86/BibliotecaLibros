@@ -1,20 +1,10 @@
 
 
+using BibliotecaLibros.Modelos;
+
 namespace BibliotecaLibros.Servicios
 {
-    public class NewBaseType
-    {
-        public void ReportSummary()
-        {
-            Console.WriteLine("\nResumen de la Biblioteca");
-            Console.WriteLine("**************************");
-            Console.WriteLine($"Total de libros registrados: {_booksByIsbn.Count}");
-            Console.WriteLine($"Total de géneros registrados: {_genres.Count}");
-            Console.WriteLine($"Total de autores registrados: {_authors.Count}");
-        }
-    }
-
-    public class ServicioLibreria : NewBaseType
+    public class ServicioLibreria
     {
         private readonly Dictionary<string, Book> _booksByIsbn = new Dictionary<string, Book>();
 
@@ -48,9 +38,11 @@ namespace BibliotecaLibros.Servicios
 
             if (!string.IsNullOrWhiteSpace(book.Genre))
             {
-                _booksByGenre[book.Genre] = new List<Book>();
-            
-            _booksByGenre[book.Genre].Add(book);
+                if (!_booksByGenre.ContainsKey(book.Genre))
+                    _booksByGenre[book.Genre] = new List<Book>();
+
+                _booksByGenre[book.Genre].Add(book);
+                _genres.Add(book.Genre);
             }
 
             if (!string.IsNullOrWhiteSpace(book.Author))
@@ -97,11 +89,20 @@ namespace BibliotecaLibros.Servicios
 
     public IEnumerable<string> GetAllAuthors() => _authors.OrderBy(a => a);
 
-    public IEnumerable<string> GetAllBooks() => _booksByIsbns.Values.OrderBy(b => b.Title);
+    public IEnumerable<Book> GetAllBooks() => _booksByIsbn.Values.OrderBy(b => b.Title);
 
     public int TotalBooks() => _booksByIsbn.Count;
     public int TotalGenres() => _genres.Count;
     public int TotalAuthors() => _authors.Count;
+
+    public void ReportSummary()
+    {
+        Console.WriteLine("\nResumen de la Biblioteca");
+        Console.WriteLine("**************************");
+        Console.WriteLine($"Total de libros registrados: {_booksByIsbn.Count}");
+        Console.WriteLine($"Total de géneros registrados: {_genres.Count}");
+        Console.WriteLine($"Total de autores registrados: {_authors.Count}");
+    }
 
     //REPORTERIA
     public void ReportDictionaryByIsbn()
@@ -116,7 +117,7 @@ namespace BibliotecaLibros.Servicios
             Console.WriteLine("No hay libros registrados.");
             return;
         }
-        foreach (var kvp in _booksByIsbn.Values.OrderBy(x => x.key))
+        foreach (var kvp in _booksByIsbn.OrderBy(x => x.Key))
         {
             Console.WriteLine($"Clave (ISBN): {kvp.Key}");
             Console.WriteLine($" Valor: {kvp.Value}");

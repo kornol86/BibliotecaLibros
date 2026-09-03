@@ -1,4 +1,7 @@
 
+using BibliotecaLibros.Modelos;
+using BibliotecaLibros.Servicios;
+
 namespace BibliotecaLibros
 {
     internal static class Program
@@ -6,7 +9,7 @@ namespace BibliotecaLibros
     static void Main(string[] args)
     {
         Console.OutputEncoding = System.Text.Encoding.UTF8;
-        var library = new LibraryService();
+        var library = new ServicioLibreria();
 
         SeedSampleData(library);
 
@@ -14,7 +17,7 @@ namespace BibliotecaLibros
         while (running)
         {
             ShowMenu();
-            Console.Write("Seleccione una opciòn:");
+            Console.Write("Seleccione una opción:");
             string? option = Console.ReadLine();
 
             switch (option)
@@ -89,7 +92,7 @@ namespace BibliotecaLibros
         Console.WriteLine("0. Salir");
     }
 
-    static void RegisterNewBook(LibraryService library)
+    static void RegisterNewBook(ServicioLibreria library)
     {
         Console.WriteLine("\nRegistro de un nuevo libro");
         Console.WriteLine("**************************");
@@ -118,14 +121,14 @@ namespace BibliotecaLibros
         library.RegisterBook(book);
     }
 
-    static void SearchByIsbn(LibraryService library)
+    static void SearchByIsbn(ServicioLibreria library)
     {
         Console.WriteLine("\nBúsqueda de libro por ISBN");
         Console.WriteLine("**************************");
         Console.Write("Ingrese el ISBN del libro: ");
         string? isbn = Console.ReadLine();
 
-        var book = library.SearchByIsbn(isbn);
+        var book = library.GetBookByIsbn(isbn);
         if (book != null)
         {
             Console.WriteLine("\nLibro encontrado:");
@@ -137,14 +140,14 @@ namespace BibliotecaLibros
         }
     }
 
-    static void SearchByGenre(LibraryService library)
+    static void SearchByGenre(ServicioLibreria library)
     {
         Console.WriteLine("\nBúsqueda de libro por género");
         Console.WriteLine("**************************");
         Console.Write("Ingrese el género del libro: ");
         string? genre = Console.ReadLine();
 
-        var books = library.SearchByGenre(genre);
+        var books = library.GetBooksByGenre(genre);
         if (books.Count > 0)
         {
             Console.WriteLine($"\nLibros encontrados en el género '{genre}':");
@@ -159,14 +162,14 @@ namespace BibliotecaLibros
         }
     }
 
-    static void SearchByAuthor(LibraryService library)
+    static void SearchByAuthor(ServicioLibreria library)
     {
         Console.WriteLine("\nBúsqueda de libro por autor");
         Console.WriteLine("**************************");
         Console.Write("Ingrese el autor del libro: ");
         string? author = Console.ReadLine();
 
-        var books = library.SearchByAuthor(author);
+        var books = library.GetBooksByAuthor(author);
         if (books.Count > 0)
         {
             Console.WriteLine($"\nLibros encontrados del autor '{author}':");
@@ -181,16 +184,16 @@ namespace BibliotecaLibros
         }
     }
 
-    static void ListAllBooks(LibraryService library)
+    static void ListAllBooks(ServicioLibreria library)
     { 
-        Console.WriteLine($"\nTodos los libros registrados ({library.TotalBooks}):");
+        Console.WriteLine($"\nTodos los libros registrados ({library.TotalBooks()}):");
         foreach (var book in library.GetAllBooks())
         {
             Console.WriteLine($" {book}");
         }
     }
 
-    static void SeedSampleData(LibraryService library)
+    static void SeedSampleData(ServicioLibreria library)
     {
         library.RegisterBook(new Book { ISBN = "978-3-16-148410-0", Title = "Cien Años de Soledad", Author = "Gabriel García Márquez", Genre = "Realismo Mágico", Year = 1967, Copies = 5 });
         library.RegisterBook(new Book { ISBN = "978-0-7432-7356-5", Title = "El Código Da Vinci", Author = "Dan Brown", Genre = "Thriller", Year = 2003, Copies = 3 });
