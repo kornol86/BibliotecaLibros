@@ -4,20 +4,32 @@ using BibliotecaLibros.Modelos;
 
 namespace BibliotecaLibros.Servicios
 {
+    ///Dictionary(Diccionario/Mapa) para acceso ràpido por ISBN, Género y Autor
     public class ServicioLibreria
     {
+        ///Diccionario (Mapa) para almacenar libros por ISBN
         private readonly Dictionary<string, Book> _booksByIsbn = new Dictionary<string, Book>();
 
+        ///Diccionario (Mapa) para almacenar libros por Género
         private readonly Dictionary<string, List<Book>> _booksByGenre = new Dictionary<string, List<Book>>();
 
+        ///Diccionario (Mapa) para almacenar libros por Autor    
         private readonly Dictionary<string, List<Book>> _booksByAuthor = new Dictionary<string, List<Book>>();
 
+        ///Conjuntos (HashSet) para almacenar géneros únicos.
         private readonly HashSet<string> _genres = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
+        ///Conjuntos (HashSet) para almacenar autores únicos.
         private readonly HashSet<string> _authors = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
+        ///Conjuntos (HashSet) todos los ISBNs registrados. 
         private readonly HashSet<string> _isbns = new HashSet<string>();
 
+        /// <summary>
+        /// Registra un nuevo libro en la biblioteca, asegurando que el ISBN sea único y que los campos obligatorios estén completos.
+        /// </summary>
+        /// <param name="book"></param>
+        /// <returns></returns>
         public bool RegisterBook(Book book)
         {
 
@@ -33,9 +45,11 @@ namespace BibliotecaLibros.Servicios
                 return false;
             }
 
+            ///Registra en diccionario principal.
             _booksByIsbn[book.ISBN] = book;
             _isbns.Add(book.ISBN);
 
+            ///Agregar a conjunto de géneros.
             if (!string.IsNullOrWhiteSpace(book.Genre))
             {
                 if (!_booksByGenre.ContainsKey(book.Genre))
@@ -47,7 +61,7 @@ namespace BibliotecaLibros.Servicios
 
             if (!string.IsNullOrWhiteSpace(book.Author))
             {
-                
+                ///Agregar a conjunto de autores.
                 _authors.Add(book.Author);
                 
                 if (!_booksByAuthor.ContainsKey(book.Author))
@@ -59,21 +73,29 @@ namespace BibliotecaLibros.Servicios
             Console.WriteLine($"Libro registrado exitosamente: {book.Title}");
             return true;
         }
-
+    ///Buscar un libro por ISBN.
     public Book? GetBookByIsbn(string isbn)
     {
         if (_booksByIsbn.TryGetValue(isbn, out var book))
             return book;
         return null;
     }
-
+    /// <summary>
+    /// Obtiene todos los libros de un género (usando el mapa por género).
+    /// </summary>
+    /// <param name="genre"></param>
+    /// <returns></returns>
     public List<Book> GetBooksByGenre(string genre)
     {
         if (_booksByGenre.TryGetValue(genre, out var books))
             return books;
         return new List<Book>();
     }
-
+    /// <summary>
+    /// Obtiene todos los libros de un autor (usando el mapa por autor).
+    /// </summary>
+    /// <param name="author"></param>
+    /// <returns></returns>
     public List<Book> GetBooksByAuthor(string author)
     {
         if (_booksByAuthor.TryGetValue(author, out var books))
@@ -81,14 +103,19 @@ namespace BibliotecaLibros.Servicios
         return new List<Book>();
     }
 
+    ///Verifica si un género existe.
     public bool GenreExists(string genre) => _genres.Contains(genre);
 
+    ///Verifica si un autor existe.
     public bool AuthorExists(string author) => _authors.Contains(author);
 
+    //Obtiene todos los géneros únicos.
     public IEnumerable<string> GetAllGenres() => _genres.OrderBy(g => g);
 
+    //Obtiene todos los autores únicos.
     public IEnumerable<string> GetAllAuthors() => _authors.OrderBy(a => a);
 
+    //Obtiene todos los libros registrados.
     public IEnumerable<Book> GetAllBooks() => _booksByIsbn.Values.OrderBy(b => b.Title);
 
     public int TotalBooks() => _booksByIsbn.Count;
@@ -152,6 +179,7 @@ namespace BibliotecaLibros.Servicios
         }
     }
     
+    ///Muestra el Mapa de libros por autor.
     public void ReportMapByAuthor()
     {
         Console.WriteLine("\nReporte de libros por autor");
@@ -178,6 +206,7 @@ namespace BibliotecaLibros.Servicios
         }
     }
 
+    ///Muestra el conjunto de géneros únicos.    
     public void ReportSetGenres()
     {
         Console.WriteLine("\nReporte de géneros registrados");
@@ -198,6 +227,7 @@ namespace BibliotecaLibros.Servicios
         }
     }
     
+    ///Muestra el conjunto de autores únicos.
     public void ReportSetAuthors()
     {
         Console.WriteLine("\nReporte de autores registrados");
