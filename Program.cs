@@ -75,13 +75,15 @@ namespace BibliotecaLibros
 
     static void ShowMenu()
     {
-        Console.WriteLine("SISTEMA DE REGISTRO DE LIBROS");
+        Console.WriteLine("---------------------------------------- ");
+        Console.WriteLine("\x1b[36m     SISTEMA DE REGISTRO DE LIBROS\x1b[0m");
         Console.WriteLine("***************************************");
         Console.WriteLine("1. Registrar un nuevo libro");
         Console.WriteLine("2. Buscar libro por ISBN");
         Console.WriteLine("3. Buscar libro por género");
         Console.WriteLine("4. Buscar libro por autor");
         Console.WriteLine("5. Listar todos los libros");
+        Console.WriteLine("----------REPORTES-----------");
         Console.WriteLine("6. Reporte Diccionario (ISBN-Libro)");
         Console.WriteLine("7. Reporte Mapa (Género-Libros)");
         Console.WriteLine("8. Reporte Mapa (Autor-Libros)");
