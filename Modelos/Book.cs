@@ -1,6 +1,3 @@
-namespace BibliotecaLibros.Modelos;
-
-
 /// <summary>
 /// Representa un libro en la Biblioteca.
 /// </summary>

@@ -1,10 +1,5 @@
 
-using BibliotecaLibros.Modelos;
-using BibliotecaLibros.Servicios;
-
-namespace BibliotecaLibros
-{
-    internal static class Program
+internal static class Program
     {
     static void Main(string[] args)
     {
@@ -202,6 +197,5 @@ namespace BibliotecaLibros
         library.RegisterBook(new Book { ISBN = "978-0-452-28423-4", Title = "1984", Author = "George Orwell", Genre = "Distopía", Year = 1949, Copies = 4 });
         library.RegisterBook(new Book { ISBN = "978-0-06-112008-4", Title = "Matar a un ruiseñor", Author = "Harper Lee", Genre = "Ficción Histórica", Year = 1960, Copies = 2 });
         library.RegisterBook(new Book { ISBN = "978-0-14-028333-4", Title = "El Gran Gatsby", Author = "F. Scott Fitzgerald", Genre = "Ficción Clásica", Year = 1925, Copies = 6 });
-    }
     }
 }

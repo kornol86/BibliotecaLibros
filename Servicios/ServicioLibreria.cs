@@ -1,11 +1,6 @@
 
-
-using BibliotecaLibros.Modelos;
-
-namespace BibliotecaLibros.Servicios
-{
-    ///Dictionary(Diccionario/Mapa) para acceso ràpido por ISBN, Género y Autor
-    public class ServicioLibreria
+///Dictionary(Diccionario/Mapa) para acceso ràpido por ISBN, Género y Autor
+public class ServicioLibreria
     {
         ///Diccionario (Mapa) para almacenar libros por ISBN
         private readonly Dictionary<string, Book> _booksByIsbn = new Dictionary<string, Book>();
@@ -246,6 +241,5 @@ namespace BibliotecaLibros.Servicios
         {
             Console.WriteLine($"- {i++}. {author}");
         }
-    }
     }
 }
